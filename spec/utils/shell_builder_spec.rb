@@ -7,14 +7,14 @@ RSpec.describe InfraOperator::Utils::ShellBuilder do
   end
 
   describe "var" do
-    subject { build { var('foo' => 'bar baz', 'hoge' => 'fuga') }.lines.map(&:chomp) }
+    subject { build { var('foo' => 'bar baz', 'hoge' => 'fuga') }.chomp.split(/; /) }
 
     it { is_expected.to include("foo=bar\\ baz") }
     it { is_expected.to include("hoge=fuga") }
   end
 
   describe "export" do
-    subject { build { export('foo' => 'bar baz', 'hoge' => 'fuga') }.lines.map(&:chomp) }
+    subject { build { export('foo' => 'bar baz', 'hoge' => 'fuga') }.chomp.split(/; /)  }
 
     it { is_expected.to include("export foo=bar\\ baz") }
     it { is_expected.to include("export hoge=fuga") }
@@ -114,12 +114,7 @@ RSpec.describe InfraOperator::Utils::ShellBuilder do
       end
     end
 
-    it { is_expected.to eq <<-EOF.chomp }
-(
-a
-b
-)
-    EOF
+    it { is_expected.to eq "( a; b )" }
   end
 
   describe "with_and" do
@@ -178,15 +173,15 @@ b
     end
 
     specify "complex one" do
-      expect(subject).to eq <<-EOF.chomp
-cd /tmp
-export foo=bar
-a hello\ world
+      expect(subject).to eq(<<-EOF.lines.map(&:chomp).join(' '))
+cd /tmp;
+export foo=bar;
+a hello\ world;
 (
-b.a
-b.b
+b.a;
+b.b;
 b.c.a | b.c.b
-)
+);
 c.a && c.b && c.c.a || c.c.b
       EOF
     end

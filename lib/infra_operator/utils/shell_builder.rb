@@ -21,7 +21,7 @@ module InfraOperator
         attr_reader :list
 
         def to_s
-          @list.map(&:to_s).join("\n")
+          @list.map(&:to_s).join("; ")
         end
 
         def var(*args)
@@ -47,9 +47,9 @@ module InfraOperator
         def subshell(&block)
           @list << [
             '(',
-            *Context.new(&block).list.map(&:to_s),
+            Context.new(&block).list.map(&:to_s).join('; '),
             ')',
-          ].join("\n")
+          ].join(' ')
         end
 
         def with_and(&block)
@@ -151,7 +151,7 @@ module InfraOperator
         end
 
         def to_s
-          escaped_variable_definitions.join("\n")
+          escaped_variable_definitions.join("; ")
         end
       end
     end
