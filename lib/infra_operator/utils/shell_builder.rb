@@ -146,10 +146,6 @@ module InfraOperator
           self.class.new(@variables.merge(:export => true))
         end
 
-        def export?
-          @export
-        end
-
         def escaped_variable_definitions
           @variables.map { |k, v| "#{@export ? 'export ' : nil}#{Shellwords.shellescape(k)}=#{Shellwords.shellescape(v)}" }
         end
