@@ -1,0 +1,3 @@
+module InfraOperator
+  VERSION = "0.1.0"
+end
