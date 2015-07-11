@@ -38,12 +38,14 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ### Terminologies
 
-- command:
+- detector:
+- command: represents command or something like shell script. may transform into single String, or may be executed directly.
+- action: 
 - command generator:
-  - environment:
-  - platform:
-  - platform variant:
-  - provider:
+  - environment: where target host runs (e.g. virtualized, on some IaaS, or baremetal ...)
+  - platform: what target host runs (e.g. OS, Distributon, ...); has many providers
+  - platform variant: variant of platform (e.g. same platform but based on systemd, or upstart / differ on version)
+  - provider: provides actions.
 
 ## Contributing
 
