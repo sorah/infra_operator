@@ -117,3 +117,10 @@ misc
 - [ ] platform_version
 - [ ] virtualization
 
+## misc
+
+- [ ] config
+  - [ ] pre_command
+  - [ ] shell
+  - [ ] path
+- [ ] stdout_handler, stderr_handler
