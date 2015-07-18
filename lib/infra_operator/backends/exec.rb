@@ -18,6 +18,10 @@ module InfraOperator
         false
       end
 
+      def self.shell?
+        true
+      end
+
       def execute_script!(script)
         # Assume you're surprised why this method is doing complex stuff --
         # we may execute scripts that starts daemon, and they may not close
