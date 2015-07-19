@@ -4,7 +4,8 @@
 - [ ] cmd
 - [ ] docker
 - [ ] dockerfile
-- [ ] exec
+- [x] exec
+- [x] native
 - [ ] lxc
 - [ ] powershell
 - [ ] shell_script
@@ -60,21 +61,28 @@ misc
 
 - [ ] linux
   - [ ] alpine
-  - [ ] amazon
   - [ ] arch
   - [ ] coreos
   - [ ] cumulus
   - [ ] debian
+    - [ ] upstart
+    - [ ] systemd
     - [ ] ubuntu
+      - [ ] upstart
+      - [ ] systemd
   - [ ] suse
   - [ ] opensuse
   - [ ] redhat
+    - [ ] centos
+    - [ ] amazon
     - [ ] v5
     - [ ] v7
   - [ ] fedora
     - [ ] sysv
     - [ ] systemd
   - [ ] gentoo
+    - [ ] sysv
+    - [ ] systemd
   - [ ] plamo
   - [ ] nixos
 - [ ] bsd
