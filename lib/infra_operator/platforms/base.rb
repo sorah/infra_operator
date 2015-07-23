@@ -39,7 +39,7 @@ module InfraOperator
             retry
           end
         when Array
-          provider.map { |_| resolve_provider_class(_) }
+          provider.map { |_| resolve_provider_class(service, _) }
         end
       end
 
@@ -65,7 +65,7 @@ module InfraOperator
 
       def determine_providers!(backend)
         @service_classes.each_key do |id|
-          determine_providers! backend, id
+          determine_provider! id, backend
         end
       end
 
