@@ -16,6 +16,10 @@ module InfraOperator
       def to_s
         @script.to_s
       end
+
+      def execute!(backend)
+        backend.execute_script!(self.to_s)
+      end
     end
   end
 end

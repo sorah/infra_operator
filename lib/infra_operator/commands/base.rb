@@ -31,7 +31,7 @@ module InfraOperator
 
       # Execute command.
       def execute!(backend)
-        backend.execute_script!(self.to_s)
+        raise NotImplementedError
       end
     end
   end
