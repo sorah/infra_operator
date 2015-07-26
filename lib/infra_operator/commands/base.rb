@@ -18,6 +18,7 @@ module InfraOperator
       # Specify block to tranform result. Passed block will be used on execute method
       def process(&block)
         @processor = block
+        self
       end
 
       def execute
