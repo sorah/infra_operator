@@ -21,8 +21,8 @@ module InfraOperator
         self
       end
 
-      def execute
-        command_result = execute!
+      def execute(backend)
+        command_result = execute!(backend)
         if @processor
           @processor.call(command_result)
         else
