@@ -1,6 +1,8 @@
 module InfraOperator
   module Commands
     class Base
+      class BackendIncompatibleError < StandardError; end
+
       def initialize(options = {}, &block)
         @options = options
         @block = block
@@ -22,6 +24,10 @@ module InfraOperator
       end
 
       def execute(backend)
+        unless self.compatible?(backend)
+          raise BackendIncompatibleError
+        end
+
         command_result = execute!(backend)
         if @processor
           @processor.call(command_result)
