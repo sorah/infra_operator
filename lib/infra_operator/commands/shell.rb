@@ -1,4 +1,5 @@
 require 'infra_operator/commands/base'
+require 'infra_operator/utils/shell_builder'
 
 module InfraOperator
   module Commands
