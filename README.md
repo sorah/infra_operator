@@ -4,15 +4,57 @@
 
 InfraOperator provides unified interface to do something on servers, with various platform. It provides the following:
 
+- __commands:__ A oneline shell script or some equivalent (e.g. PowerShell, Ruby script)
 - __backends:__ Execute commands and return results. Execution method may vary (via SSH, via exec(3), etc...). But provides same interface for all.
-- __command generators:__ Generate suitable shell scripts for target to do something.
+- __platforms:__ Collection of providers for the target host platform.
+- __providers:__ Generate suitable _command_ for target to do something.
 - __inventory:__ Collects host's informations and metrics. It may use command generator (described above) to collect informations.
 
 Also, InfraOperator provides compatible API for [SpecInfra](https://github.com/serverspec/specinfra). My goal is to replace SpecInfra with InfraOperator implementation.
 
 ## Usage
 
-TBD
+``` ruby
+require 'infra_operator'
+
+# locally
+host = InfraOperator::Host.new
+
+# or
+host = InfraOperator::Host.new(
+  backend: InfraOperator::Backends::Ssh.new(
+    host: 'example.org',
+    user: 'ops',
+  ),
+)
+
+# you can manually specify target platform
+host = InfraOperator::Host.new(
+  platform: InfraOperator::Platforms::Ubuntu::Systemd,
+)
+
+# customize all.
+host = InfraOperator::Host.new(
+  backend: InfraOperator::Backends::Ssh.new(
+    host: 'example.org',
+    user: 'ops',
+  ),
+  platform: InfraOperator::Platforms::Osx.new(
+    services: {package: :homebrew},
+  ),
+)
+
+###
+
+p host.backend
+p host.platform
+p host.services
+
+###
+
+p host.run(:service, :status, 'nginx')
+p host.run(:file, :check_is_owned_by_user, '/tmp', 'ops')
+```
 
 ## Installation
 
