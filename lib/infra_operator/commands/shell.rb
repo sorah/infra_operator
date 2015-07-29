@@ -11,7 +11,7 @@ module InfraOperator
       end
 
       def compatible?(backend)
-        backend.shell?
+        backend.class.shell?
       end
 
       def to_s
