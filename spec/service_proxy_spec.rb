@@ -4,7 +4,7 @@ require 'infra_operator/service_proxy'
 describe InfraOperator::ServiceProxy do
   let(:command) { double('command') }
   let(:backend) { double('backend') }
-  let(:service) { double('service', operate: command) }
+  let(:service) { double('service', :operate => command) }
 
   subject do
     described_class.new(backend, service)

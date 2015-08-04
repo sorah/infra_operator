@@ -12,10 +12,10 @@ module InfraOperator
         begin
           output = @block.call(backend)
         rescue Exception => e
-          return CommandResult.new(error: e)
+          return CommandResult.new(:error => e)
         end
 
-        CommandResult.new(output: output)
+        CommandResult.new(:output => output)
       end
     end
   end
