@@ -1,5 +1,6 @@
 require 'infra_operator/providers/base'
 require 'infra_operator/commands/shell'
+require 'infra_operator/command_result'
 
 module InfraOperator
   module Providers
@@ -19,11 +20,11 @@ module InfraOperator
           Commands::Shell.new do
             pipe do
               run 'openssl', 'md5', file
-              run 'cut', '-d=', '-f2'
-              run 'cut', '-c', '2-'
             end
           end.process do |stat|
-            stat.stdout.chomp
+            stat.stdout.chomp[-32..-1]
+          end.process_specinfra1 do |sum|
+            {:stdout => sum}
           end
         end
 
@@ -33,11 +34,11 @@ module InfraOperator
           Commands::Shell.new do
             pipe do
               run 'openssl', 'dgst', '-sha256', file
-              run 'cut', '-d=', '-f2'
-              run 'cut', '-c', '2-'
             end
           end.process do |stat|
-            stat.stdout.chomp
+            stat.stdout.chomp[-64..-1]
+          end.process_specinfra1 do |sum|
+            {:stdout => sum}
           end
         end
 
@@ -45,12 +46,11 @@ module InfraOperator
 
         def is_linked_to?(link, target)
           Commands::Shell.new do
-            pipe do
-              run "stat", "-f", "%Y", link
-              run "grep", "--", target # XXX:
-            end
+            run "stat", "-f", "%Y", link
           end.process do |stat|
-            stat.success?
+            stat.stdout.chomp == target
+          end.process_specinfra1 do |result|
+            result
           end
         end
 
@@ -58,12 +58,11 @@ module InfraOperator
 
         def has_mode?(file, mode)
           Commands::Shell.new do
-            pipe do
-              run "stat", "-f", "%Lp", file
-              run "fgrep", "-x", "--", mode # XXX:
-            end
+            run "stat", "-f", "%p", file
           end.process do |stat|
-            stat.success?
+            stat.stdout.chomp[-4..-1] == mode.rjust(4, '0')
+          end.process_specinfra1 do |result|
+            result
           end
         end
 
@@ -71,12 +70,11 @@ module InfraOperator
 
         def is_owned_by?(file, owner)
           Commands::Shell.new do
-            pipe do
-              run "stat", "-f", "%Su", file
-              run "fgrep", "-x", "--", owner # XXX:
-            end
+            run "stat", "-f", "%Su", file
           end.process do |stat|
-            stat.success?
+            stat.stdout.chomp == owner
+          end.process_specinfra1 do |result|
+            result
           end
         end
 
@@ -84,12 +82,11 @@ module InfraOperator
 
         def is_owned_by_group?(file, owner) # XXX:
           Commands::Shell.new do
-            pipe do
-              run "stat", "-f", "%Sg", file
-              run "fgrep", "-x", "--", owner # XXX:
-            end
+            run "stat", "-f", "%Sg", file
           end.process do |stat|
-            stat.success?
+            stat.stdout.chomp == owner
+          end.process_specinfra1 do |result|
+            result
           end
         end
 
@@ -97,11 +94,11 @@ module InfraOperator
 
         def mode(file)
           Commands::Shell.new do
-            pipe do
-              run "stat", "-f", "%Lp", file
-            end
+            run "stat", "-f", "%p", file
           end.process do |stat|
-            stat.stdout.chomp
+            stat.stdout.chomp[-4..-1]
+          end.process_specinfra1 do |fourdigit_mode|
+            fourdigit_mode[-3..-1]
           end
         end
 

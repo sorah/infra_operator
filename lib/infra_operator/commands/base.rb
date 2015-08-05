@@ -1,3 +1,5 @@
+require 'infra_operator/specinfra1_compat/command_result'
+
 module InfraOperator
   module Commands
     class Base
@@ -17,19 +19,33 @@ module InfraOperator
         raise NotImplementedError
       end
       
-      # Specify block to tranform result. Passed block will be used on execute method
+      # Specify processor block to tranform raw CommandResult. Passed block will be used on execute method
       def process(&block)
         @processor = block
         self
       end
 
-      def execute(backend)
+      # Specify block to transform processor result for specinfra v1 API. Block should return CommandResult.
+      def process_specinfra1(&block)
+        @specinfra1_processor = block
+        self
+      end
+
+      def execute_specinfra1(backend)
+        if @specinfra1_processor
+          Specinfra1Compat::CommandResult.new @specinfra1_processor.call(execute(backend))
+        else
+          Specinfra1Compat::CommandResult.new execute(backend, :raw => true)
+        end
+      end
+
+      def execute(backend, options = {})
         unless self.compatible?(backend)
           raise BackendIncompatibleError
         end
 
         command_result = execute!(backend)
-        if @processor
+        if @processor && !options[:raw]
           @processor.call(command_result)
         else
           command_result
