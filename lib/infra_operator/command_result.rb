@@ -1,5 +1,7 @@
 module InfraOperator
   class CommandResult
+    class UnsuccessfulError < StandardError; end
+
     def initialize(properties = {})
       @properties = properties
     end
@@ -58,6 +60,17 @@ module InfraOperator
 
     def error
       @properties[:error]
+    end
+
+    def value
+      case
+      when error
+        raise error
+      when !success?
+        raise  InfraOperator::CommandResult::UnsuccessfulError
+      end
+
+      self
     end
 
     private

@@ -22,7 +22,7 @@ module InfraOperator
               run 'openssl', 'md5', file
             end
           end.process do |stat|
-            stat.stdout.chomp[-32..-1]
+            stat.value.stdout.chomp[-32..-1]
           end.process_specinfra1 do |sum|
             {:stdout => sum}
           end
@@ -36,7 +36,7 @@ module InfraOperator
               run 'openssl', 'dgst', '-sha256', file
             end
           end.process do |stat|
-            stat.stdout.chomp[-64..-1]
+            stat.value.stdout.chomp[-64..-1]
           end.process_specinfra1 do |sum|
             {:stdout => sum}
           end
@@ -48,7 +48,7 @@ module InfraOperator
           Commands::Shell.new do
             run "stat", "-f", "%Y", link
           end.process do |stat|
-            stat.stdout.chomp == target
+            stat.value.stdout.chomp == target
           end.process_specinfra1 do |result|
             result
           end
@@ -60,7 +60,7 @@ module InfraOperator
           Commands::Shell.new do
             run "stat", "-f", "%p", file
           end.process do |stat|
-            stat.stdout.chomp[-4..-1] == mode.rjust(4, '0')
+            stat.value.stdout.chomp[-4..-1] == mode.rjust(4, '0')
           end.process_specinfra1 do |result|
             result
           end
@@ -72,7 +72,7 @@ module InfraOperator
           Commands::Shell.new do
             run "stat", "-f", "%Su", file
           end.process do |stat|
-            stat.stdout.chomp == owner
+            stat.value.stdout.chomp == owner
           end.process_specinfra1 do |result|
             result
           end
@@ -84,7 +84,7 @@ module InfraOperator
           Commands::Shell.new do
             run "stat", "-f", "%Sg", file
           end.process do |stat|
-            stat.stdout.chomp == owner
+            stat.value.stdout.chomp == owner
           end.process_specinfra1 do |result|
             result
           end
@@ -96,7 +96,7 @@ module InfraOperator
           Commands::Shell.new do
             run "stat", "-f", "%p", file
           end.process do |stat|
-            stat.stdout.chomp[-4..-1]
+            stat.value.stdout.chomp[-4..-1]
           end.process_specinfra1 do |fourdigit_mode|
             fourdigit_mode[-3..-1]
           end
@@ -110,7 +110,7 @@ module InfraOperator
               run "stat", "-f", "%Su", file
             end
           end.process do |stat|
-            stat.stdout.chomp
+            stat.value.stdout.chomp
           end
         end
 
@@ -122,7 +122,7 @@ module InfraOperator
               run "stat", "-f", "%Sg", file
             end
           end.process do |stat|
-            stat.stdout.chomp
+            stat.value.stdout.chomp
           end
         end
 
