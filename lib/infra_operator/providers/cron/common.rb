@@ -19,7 +19,9 @@ module InfraOperator
           end
         end
 
-        alias check_has_entry entry_defined?
+        def check_has_entry(user, entry) # specinfra1 compat
+          entry_defined?(entry, :user => user)
+        end
       end
     end
   end
