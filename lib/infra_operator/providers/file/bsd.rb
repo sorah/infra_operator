@@ -24,7 +24,7 @@ module InfraOperator
           end.process do |stat|
             stat.value.stdout.chomp[-32..-1]
           end.process_specinfra1 do |sum|
-            {:stdout => sum}
+            sum
           end
         end
 
@@ -38,7 +38,7 @@ module InfraOperator
           end.process do |stat|
             stat.value.stdout.chomp[-64..-1]
           end.process_specinfra1 do |sum|
-            {:stdout => sum}
+            sum
           end
         end
 
