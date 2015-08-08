@@ -5,7 +5,7 @@ module InfraOperator
     module Osx
       class Common < Base
         provides :file, :bsd
-        # provides :cron, :common
+        provides :cron, :common
         # provides :user, :bsd
         # provides :group, :bsd
         # provides :service, :launchd
